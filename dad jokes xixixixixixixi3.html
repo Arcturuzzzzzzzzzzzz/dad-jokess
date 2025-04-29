@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Dad Jokes Generator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #fefefe;
+            text-align: center;
+            padding: 60px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #joke-box {
+            margin-top: 30px;
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            min-height: 60px;
+            width: 400px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            font-size: 18px;
+            color: #555;
+        }
+
+        button {
+            margin-top: 20px;
+            margin-right: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background-color: #2ecc71;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Dad Jokes Generator 🤣</h1>
+
+    <div id="joke-box">Klik tombol di bawah untuk dad joke!</div>
+    <br>
+    <button onclick="generateJoke()">Tampilkan Dad Joke</button>
+    <button onclick="showAnswer()" id="answerBtn" style="display:none;">Tampilkan Jawaban</button>
+
+    <script>
+        const jokes = [
+            { question: "Kenapa komputer suka pusing?", answer: "Karena banyak proses yang nggak selesai.", weight: 1 },
+            { question: "Kenapa ayam nyebrang jalan?", answer: "Karena dia mau viral!", weight: 1 },
+            { question: "Apa yang bikin komputer takut?", answer: "Virus cinta 😍", weight: 1 },
+            { question: "Kenapa kalender selalu sedih?", answer: "Karena hari-harinya terhitung.", weight: 1 },
+            { question: "Kenapa WiFi putus?", answer: "Karena kamu terlalu jauh dari hatiku.", weight: 1 },
+            { question: "Kalau kamu jadi angka, kamu pasti 10...", answer: "Karena kamu sempurna.", weight: 1 },
+            { question: "Kenapa nasi goreng nggak mau move on?", answer: "Karena masih keinget telur dadar.", weight: 1 },
+            { question: "Kenapa cermin nggak pernah bohong?", answer: "Karena dia reflektif.", weight: 1 },
+              { question: "Kenapa buku selalu bingung?", answer: "Karena dia suka kebuka halaman baru.", weight: 1 },
+    { question: "Kenapa sapi nggak bisa main gitar?", answer: "Karena dia cuma bisa menggembala!", weight: 1 },
+    { question: "Kenapa air laut asin?", answer: "Karena ikan-ikan di dalamnya sering cemberut.", weight: 1 },
+    { question: "Kenapa gajah nggak bisa menggunakan komputer?", answer: "Karena dia nggak bisa menekan tombol mouse.", weight: 1 },
+    { question: "Kenapa mobil nggak bisa terbang?", answer: "Karena mereka lebih suka tetap di jalan.", weight: 1 },
+    { question: "Kenapa burung terbang tinggi?", answer: "Karena mereka ingin punya pandangan yang lebih jauh.", weight: 1 },
+    { question: "Kenapa ikan nggak pernah kecapekan?", answer: "Karena mereka nggak punya kaki!", weight: 1 },
+    { question: "Kenapa handphone selalu sibuk?", answer: "Karena mereka nggak bisa berhenti berkomunikasi.", weight: 1 },
+    { question: "Kenapa lampu harus tidur?", answer: "Karena dia suka mati setelah dipakai!", weight: 1 },
+    { question: "Kenapa kucing takut ke dokter?", answer: "Karena dia takut disuntik cat.", weight: 1 },
+    { question: "Kenapa lemari nggak suka ngobrol?", answer: "Karena dia lebih suka diam, tidak banyak bicara.", weight: 1 },
+    { question: "Kenapa komputer takut virus?", answer: "Karena dia nggak suka di-reboot.", weight: 1 },
+    { question: "Kenapa wortel nggak pernah kalah?", answer: "Karena dia selalu punya akar!", weight: 1 },
+    { question: "Kenapa domba nggak pernah telat?", answer: "Karena dia selalu datang tepat waktu!", weight: 1 },
+    { question: "Kenapa kita harus takut sama matematika?", answer: "Karena dia bisa membuat kita merasa tertekan!", weight: 1 },
+    { question: "Kenapa kalkulator tidak bisa melawan?", answer: "Karena dia nggak punya tenaga!", weight: 1 },
+    { question: "Kenapa lemari es sering makan malam?", answer: "Karena dia selalu pendingin suasana!", weight: 1 },
+    { question: "Kenapa anjing takut komputer?", answer: "Karena dia nggak bisa klik mouse!", weight: 1 },
+    { question: "Kenapa kunci selalu hilang?", answer: "Karena dia sering berputar-putar dalam kehidupan!", weight: 1 },
+    { question: "Kenapa pelukan itu penting?", answer: "Karena dia bisa membuat hati kita lebih hangat!", weight: 1 },
+    { question: "Kenapa kita nggak boleh percaya komputer?", answer: "Karena mereka sering menyimpan banyak rahasia!", weight: 1 },
+    { question: "Kenapa mie instan nggak suka berlarian?", answer: "Karena dia lebih suka dimasak di panci!", weight: 1 },
+    { question: "Kenapa mie spaghetti nggak bisa jatuh?", answer: "Karena dia selalu dipegang dengan erat!", weight: 1 },
+    { question: "Kenapa sepatu selalu bersama?", answer: "Karena mereka sudah cocok sejak dulu!", weight: 1 },
+    { question: "Kenapa sendok selalu bahagia?", answer: "Karena selalu punya teman dekat, garpu!", weight: 1 },
+    { question: "Kenapa komputer selalu ingat tanggal?", answer: "Karena dia punya banyak memori!", weight: 1 },
+    { question: "Kenapa kopi nggak bisa tidur?", answer: "Karena dia selalu terjaga dengan kafein!", weight: 1 },
+    { question: "Kenapa lampu tidur selalu benci tidur?", answer: "Karena dia takut mati.", weight: 1 },
+    { question: "Kenapa pintu selalu terbuka?", answer: "Karena dia selalu punya ruang untuk orang lain.", weight: 1 },
+    { question: "Kenapa peluru selalu lari?", answer: "Karena dia nggak pernah bisa duduk diam!", weight: 1 },
+    { question: "Kenapa langit selalu cerah?", answer: "Karena dia nggak pernah menangis.", weight: 1 },
+    { question: "Kenapa buku tidak bisa bicara?", answer: "Karena mereka lebih suka diam dan dibaca.", weight: 1 },
+    { question: "Kenapa kacamata nggak bisa tidur?", answer: "Karena dia selalu di depan mata.", weight: 1 },
+    { question: "Kenapa kalender selalu bersemangat?", answer: "Karena dia tahu besok adalah hari baru.", weight: 1 },
+    { question: "Kenapa pohon tidak bisa bergerak?", answer: "Karena mereka selalu menetap di satu tempat!", weight: 1 },
+    { question: "Kenapa mobil selalu berhenti?", answer: "Karena dia sudah capek jalan jauh.", weight: 1 },
+    { question: "Kenapa tangan selalu di tangan?", answer: "Karena mereka selalu ingin bersama!", weight: 1 },
+    { question: "Kenapa bulan nggak pernah jatuh?", answer: "Karena dia selalu menjaga jaraknya.", weight: 1 },
+    { question: "Kenapa pintu kaca itu transparan?", answer: "Karena tidak ada rahasia di dalamnya!", weight: 1 },
+    { question: "Kenapa pintu itu sangat sosial?", answer: "Karena dia selalu terbuka untuk orang lain!", weight: 1 },
+    { question: "Kenapa kucing takut sama anjing?", answer: "Karena anjing bisa menggonggong dan itu menakutkan!", weight: 1 },
+    { question: "Kenapa sepeda nggak bisa jalan sendiri?", answer: "Karena dia hanya bisa berputar dengan roda!", weight: 1 },
+    { question: "Kenapa bola nggak bisa tidur?", answer: "Karena dia selalu bergulir.", weight: 1 },
+    { question: "Kenapa pemadam kebakaran takut air?", answer: "Karena dia nggak ingin kelelep!", weight: 1 },
+    { question: "Kenapa lemari kaca selalu terlihat bersih?", answer: "Karena dia nggak pernah kelihatan kotor.", weight: 1 },
+    { question: "Kenapa kentang nggak suka bercakap?", answer: "Karena dia lebih suka dimasak.", weight: 1 },
+    { question: "Kenapa botol susu nggak pernah marah?", answer: "Karena dia selalu penuh cinta.", weight: 1 },
+    { question: "Kenapa burung hantu lebih pintar?", answer: "Karena dia bisa melihat di malam hari!", weight: 1 },
+    { question: "Kenapa pohon tidak bisa pergi liburan?", answer: "Karena mereka sudah nyaman di tempatnya.", weight: 1 },
+    { question: "Kenapa mobil suka parkir?", answer: "Karena dia nggak bisa berjalan terus-menerus.", weight: 1 },
+    { question: "Kenapa kaca selalu bening?", answer: "Karena dia nggak punya rahasia.", weight: 1 },
+    { question: "Kenapa durian bau?", answer: "Karena dia pengen kasih kejutan!", weight: 1 },
+    { question: "Kenapa kuda nggak pernah terlambat?", answer: "Karena dia selalu berlari cepat!", weight: 1 },
+    { question: "Kenapa kursi selalu ada di setiap rumah?", answer: "Karena dia selalu siap menampung siapa saja yang datang.", weight: 1 },
+    { question: "Kenapa buku selalu ingin dibaca?", answer: "Karena dia suka diperhatikan!", weight: 1 },
+    { question: "Kenapa matahari selalu terbit?", answer: "Karena dia nggak pernah malas.", weight: 1 },
+    { question: "Kenapa sepatu nggak bisa lari?", answer: "Karena dia hanya bisa berjalan.", weight: 1 },
+    { question: "Kenapa pesawat selalu terbang?", answer: "Karena dia nggak bisa jalan kaki.", weight: 1 },
+    { question: "Kenapa anjing selalu mengikuti kita?", answer: "Karena dia setia seperti teman terbaik!", weight: 1 },
+    { question: "Kenapa hewan peliharaan tidak bisa memakai pakaian?", answer: "Karena mereka sudah dilengkapi dengan bulu!", weight: 1 },
+    { question: "Kenapa kereta nggak bisa ke luar negeri?", answer: "Karena dia cuma bisa beroperasi di rel!", weight: 1 },
+    { question: "Kenapa kucing bisa bergerak cepat?", answer: "Karena mereka sudah terlatih untuk berburu.", weight: 1 },
+    { question: "Kenapa tikus nggak takut pada kucing?", answer: "Karena dia nggak tahu kenapa!", weight: 1 }
+        ];
+
+        let currentAnswer = "";
+        let jokeHistory = []; // Untuk melacak joke yang telah muncul.
+
+        function generateJoke() {
+            // Menghitung total bobot
+            const totalWeight = jokes.reduce((sum, joke) => sum + joke.weight, 0);
+
+            // Menentukan angka acak berdasarkan total bobot
+            let randomWeight = Math.floor(Math.random() * totalWeight);
+            let selectedJoke;
+
+            // Memilih joke berdasarkan bobotnya
+            for (let joke of jokes) {
+                randomWeight -= joke.weight;
+                if (randomWeight < 0) {
+                    selectedJoke = joke;
+                    break;
+                }
+            }
+
+            // Menampilkan pertanyaan joke yang dipilih
+            document.getElementById("joke-box").textContent = selectedJoke.question;
+            currentAnswer = selectedJoke.answer;
+            document.getElementById("answerBtn").style.display = "inline-block";
+
+            // Menurunkan bobot joke yang sudah muncul
+            selectedJoke.weight = Math.max(0, selectedJoke.weight - 0.2); // Kurangi bobot agar lebih jarang muncul
+        }
+
+        function showAnswer() {
+            document.getElementById("joke-box").textContent += "\n\n👉 " + currentAnswer;
+            document.getElementById("answerBtn").style.display = "none";
+        }
+    </script>
+
+</body>
+</html>
